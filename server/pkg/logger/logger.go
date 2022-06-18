@@ -26,22 +26,22 @@ var _ LoggerService = (*Logger)(nil)
 
 // New -.
 func New(level string) *Logger {
-	var l zerolog.Level
+	var logLevel zerolog.Level
 
 	switch strings.ToLower(level) {
 	case "error":
-		l = zerolog.ErrorLevel
+		logLevel = zerolog.ErrorLevel
 	case "warn":
-		l = zerolog.WarnLevel
+		logLevel = zerolog.WarnLevel
 	case "info":
-		l = zerolog.InfoLevel
+		logLevel = zerolog.InfoLevel
 	case "debug":
-		l = zerolog.DebugLevel
+		logLevel = zerolog.DebugLevel
 	default:
-		l = zerolog.InfoLevel
+		logLevel = zerolog.InfoLevel
 	}
 
-	zerolog.SetGlobalLevel(l)
+	zerolog.SetGlobalLevel(logLevel)
 
 	skipFrameCount := 3
 	logger := zerolog.New(os.Stdout).With().Timestamp().CallerWithSkipFrameCount(zerolog.CallerSkipFrameCount + skipFrameCount).Logger()

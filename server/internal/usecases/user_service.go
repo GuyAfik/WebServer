@@ -2,21 +2,21 @@ package usecases
 
 import (
 	"context"
-
+	"github.com/WebServer/server/pkg/http_utils"
 	"github.com/WebServer/server/internal/entities"
 )
 
 type (
 	// UserService
 	UserService interface {
-		CreateUser(*context.Context, *entities.User) (*entities.User, error)
-		UpdatePassword(*context.Context, *entities.User) error
-		GetUser(*context.Context, *entities.User) (*entities.User, error)
+		CreateUser(ctx context.Context, userEntity *entities.User) (*entities.User, *http_utils.ApiErrorResponse)
+		UpdatePassword(ctx context.Context, password string) *http_utils.ApiErrorResponse
+		GetUser(ctx context.Context, userID string) (*entities.User, *http_utils.ApiErrorResponse)
 	}
 
 	// UserDBService
 	UserDBService interface {
-		Store(*context.Context, *entities.User) error
-		Get(*context.Context, *entities.User) (*entities.User, error)
+		Store(context.Context, *entities.User) *http_utils.ApiErrorResponse
+		Get(ctx context.Context, userID string) (*entities.User, *http_utils.ApiErrorResponse)
 	}
 )

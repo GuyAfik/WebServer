@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/WebServer/server/internal/entities"
+	"github.com/WebServer/server/pkg/http_utils"
 )
 
 type UserDBService struct {
@@ -14,10 +15,10 @@ func New() *UserDBService {
 	return &UserDBService{}
 }
 
-func (uDBs *UserDBService) Get(ctx *context.Context, user *entities.User) (*entities.User, error) {
-	return user, nil
+func (uDBs *UserDBService) Get(ctx context.Context, userID string) (*entities.User, *http_utils.ApiErrorResponse) {
+	return &entities.User{UserName: "1234", Password: "1234", Email: "test@gmail.com"}, nil
 }
 
-func (uDBs *UserDBService) Store(*context.Context, *entities.User) error {
+func (uDBs *UserDBService) Store(ctx context.Context, userEntity *entities.User) *http_utils.ApiErrorResponse {
 	return nil
 }

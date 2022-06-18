@@ -1,5 +1,0 @@
-package httpApi
-
-func main() {
-	
-}

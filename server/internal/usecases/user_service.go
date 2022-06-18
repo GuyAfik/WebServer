@@ -16,7 +16,7 @@ type (
 
 	// UserDBService
 	UserDBService interface {
-		Store(context.Context, *entities.User) *http_utils.ApiErrorResponse
+		Store(ctx context.Context, userEntity *entities.User) *http_utils.ApiErrorResponse
 		Get(ctx context.Context, userID string) (*entities.User, *http_utils.ApiErrorResponse)
 	}
 )

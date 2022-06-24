@@ -5,16 +5,20 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
-
-type ApiErrorResponse struct {
-	Code int
+type ErrorResponse struct {
+	Code    int
 	Message string
 }
 
-func (err *ApiErrorResponse) Error() string {
+func NewErrorResponse(message string, code int) *ErrorResponse {
+	return &ErrorResponse{Message: message, Code: code}
+}
+
+func (err *ErrorResponse) Error() string {
 	return fmt.Sprintf("Error: %s, code: %d", err.Message, err.Code)
 }
 
-func ErrorRepsonse(c *gin.Context, err *ApiErrorResponse) {
-	c.AbortWithStatusJSON(err.Code, err.Message)
+func (er *ErrorResponse) Response (c *gin.Context) {
+	c.AbortWithStatusJSON(er.Code, er)
 }
+

@@ -15,7 +15,7 @@ func NewUserCase(userDBservice UserDBService) *UserUsecase {
 	return &UserUsecase{userDBservice: userDBservice}
 }
 
-func (userUC *UserUsecase) CreateUser(ctx context.Context, userEntity *entities.User) (*entities.User, *http_utils.ApiErrorResponse) {
+func (userUC *UserUsecase) CreateUser(ctx context.Context, userEntity *entities.UserEntity) (*entities.UserEntity, *http_utils.ErrorResponse) {
 	err := userUC.userDBservice.Store(ctx, userEntity)
 	if err != nil {
 		return nil, err
@@ -23,10 +23,10 @@ func (userUC *UserUsecase) CreateUser(ctx context.Context, userEntity *entities.
 	return userEntity, nil
 }
 
-func (userUC *UserUsecase) UpdatePassword(ctx context.Context, password string) *http_utils.ApiErrorResponse {
+func (userUC *UserUsecase) UpdatePassword(ctx context.Context, password string) *http_utils.ErrorResponse {
 	return nil
 }
 
-func (userUC *UserUsecase) GetUser(ctx context.Context, userID string) (*entities.User, *http_utils.ApiErrorResponse) {
+func (userUC *UserUsecase) GetUser(ctx context.Context, userID string) (*entities.UserEntity, *http_utils.ErrorResponse) {
 	return userUC.userDBservice.Get(ctx, userID)
 }

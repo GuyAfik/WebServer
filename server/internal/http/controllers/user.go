@@ -41,7 +41,7 @@ func (userRoutes *userRoutes) getUser(c *gin.Context) {
 	user, err := userRoutes.userService.GetUser(c.Request.Context(), _id)
 	if err != nil {
 		userRoutes.logger.Error(err, "Get-User")
-		http_utils.ErrorRepsonse(c, err)
+		err.Response(c)
 		return
 	}
 	c.JSON(http.StatusOK, user)
@@ -54,18 +54,19 @@ func (userRoutes *userRoutes) getUser(c *gin.Context) {
 // @Failure     400 bad request or 500 internal error
 // @Router      /users/create
 func (userRoutes *userRoutes) createUser(c *gin.Context) {
-	var request entities.User
+	var request entities.UserEntity
 	if err := c.ShouldBindJSON(&request); err != nil {
-		errResponse := &http_utils.ApiErrorResponse{Message: err.Error(), Code: http.StatusBadRequest}
-		userRoutes.logger.Error(errResponse, "Create-User")
-		http_utils.ErrorRepsonse(c, errResponse)
+		customErr := http_utils.NewErrorResponse(err.Error(), http.StatusBadRequest)
+		userRoutes.logger.Error(err, "Create-User")
+		customErr.Response(c)
 		return
 	}
 
 	user, err := userRoutes.userService.CreateUser(c.Request.Context(), &request)
 	if err != nil {
 		userRoutes.logger.Error(err, "Create-User")
-		http_utils.ErrorRepsonse(c, err)
+		err.Response(c)
+		return
 	}
 	c.JSON(http.StatusOK, user)
 }
@@ -77,18 +78,18 @@ func (userRoutes *userRoutes) createUser(c *gin.Context) {
 // @Failure     404 not found or 500 internal error
 // @Router      /users/update/:id/password
 func (userRoutes *userRoutes) updatePassword(c *gin.Context) {
-	var request entities.User
+	var request entities.UserEntity
 	if err := c.ShouldBindJSON(&request); err != nil {
-		errResponse := &http_utils.ApiErrorResponse{Message: err.Error(), Code: http.StatusBadRequest}
+		errResponse := &http_utils.ErrorResponse{Message: err.Error(), Code: http.StatusBadRequest}
 		userRoutes.logger.Error(errResponse, "updatePassword")
-		http_utils.ErrorRepsonse(c, errResponse)
+		errResponse.Response(c)
 		return
 	}
 
 	err := userRoutes.userService.UpdatePassword(c.Request.Context(), request.Password)
 	if err != nil {
 		userRoutes.logger.Error(err, "updatePassword")
-		http_utils.ErrorRepsonse(c, err)
+		err.Response(c)
 		return
 	}
 

@@ -7,4 +7,5 @@ type UserEntity struct {
 	Username string `json:"username" example:"username123" binding:"required"`
 	Password string `json:"password" example:"abdjf841235" binding:"required"`
 	Email    string `json:"email" example:"test@gmail.com" binding:"required"`
+	ID       uint64 `json:"id" example:"1234" gorm:"primaryKey"`
 }

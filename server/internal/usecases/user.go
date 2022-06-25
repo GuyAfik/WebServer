@@ -2,6 +2,8 @@ package usecases
 
 import (
 	"context"
+	"net/http"
+	"strconv"
 
 	"github.com/WebServer/server/internal/entities"
 	"github.com/WebServer/server/pkg/http_utils"
@@ -28,5 +30,13 @@ func (userUC *UserUsecase) UpdatePassword(ctx context.Context, password string) 
 }
 
 func (userUC *UserUsecase) GetUser(ctx context.Context, userID string) (*entities.UserEntity, *http_utils.ErrorResponse) {
-	return userUC.userDBservice.Get(ctx, userID)
+	primaryKey, err := strconv.ParseUint(userID, 10, 64)
+	if err != nil {
+		return nil, http_utils.NewErrorResponse(err.Error(), http.StatusInternalServerError)
+	}
+	return userUC.userDBservice.Get(ctx, primaryKey)
+}
+
+func (userUC *UserUsecase) GetAllUsers(ctx context.Context) []*entities.UserEntity {
+	return userUC.userDBservice.GetAll(ctx)
 }
